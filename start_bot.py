@@ -61,10 +61,9 @@ def process(cmd):
         params = params.append([{'Name': name.upper(), "Val": val}])
         save(params, param_file)
         rtn = params.to_string(index=False)
-    elif cmd_key == 'refresh_code':
-        os.system('rm -rf /opt/demo_flight')
-        os.system('git clone https://github.com/axxiao/demo_flight.git /opt/demo_flight')
-        rtn = 'Reloaded Code Need to Restart!'
+    elif cmd_key == 'hot_fix_code':
+        os.system('/opt/demo_flight/apply_hot_fix.sh')
+        rtn = 'Applied Hot Fix Code'
     return rtn
     
 @slack.RTMClient.run_on(event='hello')
