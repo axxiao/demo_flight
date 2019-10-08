@@ -89,10 +89,10 @@ function initializeClock(id, endtime) {
     if(h<=0){hoursSpan.innerHTML ='<font color="red"><b>00</b></font>'}
         else{hoursSpan.innerHTML = ('0' + h).slice(-2);}
     m = t.minutes ;
-    if(m<=0){minutesSpan.innerHTML = '<font color="red"><b>00</b></font>'}
+    if(m<=0 && h<=0){minutesSpan.innerHTML = '<font color="red"><b>00</b></font>'}
         else{minutesSpan.innerHTML = ('0' + m).slice(-2);}
     s = t.seconds;
-    if(s<=0){secondsSpan.innerHTML ='<font color="red"><b>00</b></font>'}
+    if(s<=0 && m<=0 && h<=0){secondsSpan.innerHTML ='<font color="red"><b>00</b></font>'}
         else{secondsSpan.innerHTML = ('0' + s).slice(-2);}
    
 
