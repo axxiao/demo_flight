@@ -1,0 +1,113 @@
+<!doctype html>
+
+<html lang="en">
+
+
+
+<style>
+html, body {
+    height: 100%;
+}
+html {
+    display: table;
+    margin: auto;
+}
+body{
+   text-align: center;
+   display: table-cell;
+    vertical-align: middle;
+	background: #00ECB9;
+  font-family: sans-serif;
+  font-weight: 100;
+}
+
+h1{
+  color: #396;
+  font-weight: 100;
+  font-size: 40px;
+  margin: 40px 0px 20px;
+}
+
+#clockdiv{
+	font-family: sans-serif;
+	color: #fff;
+	display: inline-block;
+	font-weight: 100;
+	text-align: center;
+	font-size: 60px;
+}
+
+#clockdiv > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: #00BF96;
+	display: inline-block;
+}
+
+#clockdiv div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: #00816A;
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 32px;
+}
+</style>
+
+<script>
+function getTimeRemaining(endtime) {
+  var n = new Date();
+  var t = endtime - n;
+  var seconds = Math.floor((t / 1000) % 60);
+  var minutes = Math.floor((t / 1000 / 60) % 60);
+  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+  //var days = Math.floor(t / (1000 * 60 * 60 * 24));
+  return {
+    'total': t,
+   // 'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+
+function initializeClock(id, endtime) {
+  var clock = document.getElementById(id);
+  //var daysSpan = clock.querySelector('.days');
+  var hoursSpan = clock.querySelector('.hours');
+  var minutesSpan = clock.querySelector('.minutes');
+  var secondsSpan = clock.querySelector('.seconds');
+
+  
+
+  function updateClock() {
+    var t = getTimeRemaining(endtime);
+    h = t.hours;
+    if(h<=0){hoursSpan.innerHTML ='<font color="red"><b>00</b></font>'}
+        else{hoursSpan.innerHTML = ('0' + h).slice(-2);}
+    m = t.minutes ;
+    if(m<=0 && h<=0){minutesSpan.innerHTML = '<font color="red"><b>00</b></font>'}
+        else{minutesSpan.innerHTML = ('0' + m).slice(-2);}
+    s = t.seconds;
+    if(s<=0 && m<=0 && h<=0){secondsSpan.innerHTML ='<font color="red"><b>00</b></font>'}
+        else{secondsSpan.innerHTML = ('0' + s).slice(-2);}
+   
+
+    if (t.total <= 0) {
+      clearInterval(timeinterval);
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+</script>
+<body>
+
+<h1>Next Flight #FLIGHT# To #DEST# is not yet being counting down</h1>
+
+    </body>
+	</html>

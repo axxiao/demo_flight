@@ -10,6 +10,7 @@ from selenium import webdriver
 from datetime import datetime, timedelta
 import time
 import traceback
+import logging
 
 class Monitor:
     def __init__(self, input_file_name=dataset_file):
@@ -36,9 +37,8 @@ class Monitor:
             t += delta
         return t
     
-    def build_file(self, info):
-        filename = base_dir + 'display.html'
-        template_file = 'templates/template.html'
+    def build_file(self, info, template_file = 'templates/template.html'):
+        filename = base_dir + 'display.html'        
         with open(template_file, "r") as t:
             temp = t.readlines()
             def fill(text, src, val):
@@ -66,6 +66,7 @@ class Monitor:
         #    a_list = a_list[a_list['time'] >= now]
         #    print('Filter overlaps')
         print(now, a_list)
+        logging.debug(str(a_list))
         if len(a_list) > 0: # and self.running is None:
             # get the 1st
             current = a_list.iloc[0].to_dict()
@@ -82,13 +83,17 @@ class Monitor:
                 self.driver.refresh()
                 self.running = current          
                 os.system('xset dpms force on') # trun screen on
+                logging.info('Turn Screen On')
         else:
             if self.running is not None:
                 # if self.driver:
                 #     self.driver.close()
                 # self.driver = None
+                self.driver.get(self.build_file(self.running, template_file='templates/template_blank.html'))
+                self.driver.refresh()
                 self.running = None
                 print(now, 'Turning off display')
+                logging.info('Turn Screen Off')
                 os.system('xset dpms force off') # blank screen
         
 if __name__== '__main__':
