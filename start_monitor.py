@@ -61,12 +61,12 @@ class Monitor:
         dataset['time_start'] = dataset['Cutoff'].apply(lambda x:self.form_time(x, now, timedelta(seconds=start_delta)))
         dataset['time_end'] = dataset['Cutoff'].apply(lambda x:self.form_time(x, now, timedelta(seconds=end_delta)))
         a_list = dataset[(dataset['time_start'] <= now)&(dataset['time_end'] > now )].sort_values(['time_start'])
-        if len(a_list) > 1:
-            # multi records overlaps
-            a_list = a_list[a_list['time'] >= now]
-            print('Filter overlaps')
+        # if len(a_list) > 1:
+        #    # multi records overlaps
+        #    a_list = a_list[a_list['time'] >= now]
+        #    print('Filter overlaps')
         print(now, a_list)
-        if len(a_list) > 0 and self.running is None:
+        if len(a_list) > 0: # and self.running is None:
             # get the 1st
             current = a_list.iloc[0].to_dict()
             new_flg = False
