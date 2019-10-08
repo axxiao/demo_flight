@@ -39,7 +39,7 @@ class Monitor:
     
     def build_file(self, info, template_file = 'templates/template.html'):
         filename = base_dir + 'display.html'        
-        with open(template_file, "r") as t:
+        with open('/opt/demo_flight/' +template_file, "r") as t:
             temp = t.readlines()
             def fill(text, src, val):
                 return [x.replace(src,val) for x in text]
