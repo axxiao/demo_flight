@@ -25,8 +25,8 @@ class Monitor:
         self.driver = webdriver.Chrome(desired_capabilities=desired_capabilities)
         self.timeformat = '%Y-%m-%d %H:%M:%S'
         self.interval = 10
-        # self.driver.fullscreen_window()
-        # os.system('xset dpms force off') 
+        self.driver.fullscreen_window()
+        os.system('xset dpms force off') 
             
     
     def form_time(self, time_part, now, delta=None):
@@ -73,7 +73,7 @@ class Monitor:
                 pass
             
             if new_flg:            
-                
+                print(now, current)
                 self.driver.get(self.build_file(current))
                 self.driver.refresh()
                 self.running = current          
@@ -84,6 +84,7 @@ class Monitor:
                 #     self.driver.close()
                 # self.driver = None
                 self.running = None
+                print(now, 'Turning off display')
                 os.system('xset dpms force off') # blank screen
         
 if __name__== '__main__':
