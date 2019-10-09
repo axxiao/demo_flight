@@ -41,18 +41,23 @@ class Monitor:
         filename = base_dir + 'display.html'        
         with open('/opt/demo_flight/' +template_file, "r") as t:
             temp = t.readlines()
+
             def fill(text, src, val):
-                return [x.replace(src,val) for x in text]
+                return [x.replace(src, val) for x in text]
+
             temp = fill(temp, '#DEST#', info['Destination'])
             temp = fill(temp, '#FLIGHT#', info['Flight'])
             temp = fill(temp, '#TIME#', info['time'].strftime(self.timeformat))
+            temp = fill(temp, '#C_TEXT_SIZE#', info.get('COUNT_TEXT_SIZE', '60'))
+            temp = fill(temp, '#S_TEXT_SIZE#', info.get('DESC_TEXT_SIZE', '60'))
+            temp = fill(temp, '#H1_SIZE#', info.get('HEAD_TEXT_SIZE', '100'))
             with open(filename, 'w') as w:
                 w.writelines(temp)
         return 'file:///' + filename
 
     def run(self):
         dataset = read_source(self.input_file_name, flight_schema)
-        params = params = {x['Name'].upper():x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
+        params = {x['Name'].upper():x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
         start_delta = -60 * int(params.get('AHEAD', '40'))
         end_delta = 60 * int(params.get('AFTER', '5'))
         self.interval = int(params.get('REFRESH_INTERVAL', '10'))
@@ -72,14 +77,14 @@ class Monitor:
             current = a_list.iloc[0].to_dict()
             new_flg = False
             if self.running is None:
-                new_flg =  True
+                new_flg = True
             else:
                 # need to deal with overlaps
                 pass
             
             if new_flg:            
                 print(now, current)
-                self.driver.get(self.build_file(current))
+                self.driver.get(self.build_file(current.update(params)))
                 self.driver.refresh()
                 self.running = current          
                 os.system('xset dpms force on') # trun screen on
