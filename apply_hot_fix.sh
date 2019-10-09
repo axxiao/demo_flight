@@ -11,6 +11,7 @@ echo "Copy to $MAIN from $CODE"
 cp -rf $CODE $MAIN
 echo "Restarting"  >> $BASE/hot_fix.log
 sudo kill $(ps -ef | grep start_monitor | awk '{print $2}')
+sudo kill $(ps -ef | grep chromium-browser | awk '{print $2}')
 python $MAIN/start_monitor.py &
 echo "Restarted"  >> $BASE/hot_fix.log
 echo "Hot Fix Done" >> $BASE/hot_fix.log
