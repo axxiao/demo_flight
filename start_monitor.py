@@ -43,7 +43,7 @@ class Monitor:
             temp = t.readlines()
 
             def fill(text, src, val):
-                return [x.replace(src, val) for x in text]
+                return [x.replace(src, str(val)) for x in text]
 
             temp = fill(temp, '#DEST#', info['Destination'])
             temp = fill(temp, '#FLIGHT#', info['Flight'])
