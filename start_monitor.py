@@ -38,7 +38,7 @@ class Monitor:
         return t
     
     def build_file(self, info, template_file = 'templates/template.html'):
-        filename = base_dir + 'display.html'        
+        filename = '/run/demo/' + 'display.html' # hard-code to in-memory location
         with open('/opt/demo_flight/' +template_file, "r") as t:
             temp = t.readlines()
 
@@ -75,10 +75,10 @@ class Monitor:
             print(now, a_list)
             logging.debug(str(a_list))
             logging.debug(str(dataset))
-        if len(a_list) > 0: # and self.running is None:
+        if len(a_list) > 0:  # and self.running is None:
             # get the 1st
             current = a_list.iloc[0].to_dict()
-            new_flg = False
+            new_flg = True  # always to run
             if self.running is None:
                 new_flg = True
             else:
@@ -93,16 +93,16 @@ class Monitor:
                 os.system('xset dpms force on') # trun screen on
                 logging.info('Turn Screen On')
         else:
-            if self.running is not None:
-                # if self.driver:
-                #     self.driver.close()
-                # self.driver = None
-                self.driver.get(self.build_file(self.running, template_file='templates/template_blank.html'))
-                self.driver.refresh()
-                self.running = None
-                print(now, 'Turning off display')
-                logging.info('Turn Screen Off')
-                os.system('xset dpms force off') # blank screen
+            # if self.running is not None:
+            #     # if self.driver:
+            #     #     self.driver.close()
+            #     # self.driver = None
+            self.driver.get(self.build_file(self.running, template_file='templates/template_blank.html'))
+            self.driver.refresh()
+            # self.running = None
+            print(now, 'Turning off display')
+            logging.info('Turn Screen Off')
+            os.system('xset dpms force off')  # blank screen
         
 if __name__== '__main__':
     m = Monitor(dataset_file)
