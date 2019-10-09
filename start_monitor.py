@@ -57,7 +57,7 @@ class Monitor:
 
     def run(self):
         dataset = read_source(self.input_file_name, flight_schema)
-        params = {x['Name'].upper():x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
+        params = {x['Name'].upper(): x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
         start_delta = -60 * int(params.get('AHEAD', '40'))
         end_delta = 60 * int(params.get('AFTER', '5'))
         self.interval = int(params.get('REFRESH_INTERVAL', '10'))
@@ -84,7 +84,7 @@ class Monitor:
             
             if new_flg:            
                 print(now, current)
-                self.driver.get(self.build_file(current.update(params)))
+                self.driver.get(self.build_file({**current, **params}))
                 self.driver.refresh()
                 self.running = current          
                 os.system('xset dpms force on') # trun screen on
