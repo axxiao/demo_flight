@@ -1,5 +1,8 @@
 #!/bin/bash
 # Hot Fix code for apply patching automatically
+# __author__="Alex Xiao"
+# __date__="2019-10-10"
+# __version__="0.1"
 date >> $DEMO_BASE/hot_fix.log
 CODE=${DEMO_CODE_DIR:-"/opt/demo_flight_code"}
 BASE=${DEMO_BASE:-"/opt/demo_data"}
