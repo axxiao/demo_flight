@@ -11,6 +11,8 @@ from datetime import datetime, timedelta
 import time
 import traceback
 import logging
+import slack
+
 
 class Monitor:
     def __init__(self, input_file_name=dataset_file):
@@ -103,7 +105,20 @@ class Monitor:
             print(now, 'Turning off display')
             logging.info('Turn Screen Off')
             os.system('xset dpms force off')  # blank screen
-        
+
+
+def alert():
+    file='/run/demo/usb_count'
+    os.system('lsusb | wc -l > ' + file)
+    with open(file, 'r') as f:
+        num = int(f.readline())
+    
+    if num > 4:
+        client = slack.WebClient(token=slack_token)
+        response = client.chat_postMessage(
+            channel=channel,
+            text="ALERT: UNKNOWN USB attached to PI!")
+
 if __name__== '__main__':
     m = Monitor(dataset_file)
     # poll forever
@@ -111,6 +126,7 @@ if __name__== '__main__':
     while True:
         try:
             m.run()
+            alert()
         except:
             traceback.print_exc()
         time.sleep(m.interval)
