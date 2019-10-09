@@ -48,8 +48,8 @@ class Monitor:
             temp = fill(temp, '#DEST#', info['Destination'])
             temp = fill(temp, '#FLIGHT#', info['Flight'])
             temp = fill(temp, '#TIME#', info['time'].strftime(self.timeformat))
-            temp = fill(temp, '#C_TEXT_SIZE#', info.get('COUNT_TEXT_SIZE', '60'))
-            temp = fill(temp, '#S_TEXT_SIZE#', info.get('DESC_TEXT_SIZE', '60'))
+            temp = fill(temp, '#C_TEXT_SIZE#', info.get('TEXT_SIZE', '60'))
+            temp = fill(temp, '#S_TEXT_SIZE#', info.get('TEXT_SIZE', '60'))
             temp = fill(temp, '#H1_SIZE#', info.get('HEAD_TEXT_SIZE', '100'))
             with open(filename, 'w') as w:
                 w.writelines(temp)
