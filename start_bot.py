@@ -61,10 +61,16 @@ def process(cmd):
         params = params.append([{'Name': name.upper(), "Val": val}])
         save(params, param_file)
         rtn = params.to_string(index=False)
+    elif cmd_key == 'del_param':
+        params = read_source(param_file, param_schema)
+        params = params[params['Name'] != cmd_val.upper()]
+        save(params, param_file)
+        rtn = f'Removed parameter: {cmd_val}'
     elif cmd_key == 'hot_fix_code':
         os.system('/opt/demo_flight/apply_hot_fix.sh')
         rtn = 'Applied Hot Fix Code'
     return rtn
+
     
 @slack.RTMClient.run_on(event='hello')
 def hello(**payload):
