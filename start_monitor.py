@@ -48,6 +48,7 @@ class Monitor:
             temp = fill(temp, '#DEST#', info['Destination'])
             temp = fill(temp, '#FLIGHT#', info['Flight'])
             temp = fill(temp, '#TIME#', info['time'].strftime(self.timeformat))
+            temp = fill(temp, '#CUT_TIME#', info['time'].strftime('%H:%M'))
             temp = fill(temp, '#C_TEXT_SIZE#', info.get('TEXT_SIZE', '60'))
             temp = fill(temp, '#S_TEXT_SIZE#', info.get('TEXT_SIZE', '60'))
             temp = fill(temp, '#H1_SIZE#', info.get('HEAD_TEXT_SIZE', '100'))
