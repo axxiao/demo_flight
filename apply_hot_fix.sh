@@ -8,7 +8,7 @@ rm -rf $CODE
 echo "Cleaned up $CODE" >> $BASE/hot_fix.log
 git clone https://github.com/axxiao/demo_flight.git $CODE >> $BASE/hot_fix.log 2>> $BASE/hot_fix.log
 echo "Copy to $MAIN from $CODE"  >> $BASE/hot_fix.log
-cp -rf $CODE $MAIN
+cp -rf $CODE/* $MAIN
 echo "Restarting"  >> $BASE/hot_fix.log
 sudo kill $(ps -ef | grep start_monitor | awk '{print $2}')
 sudo kill $(ps -ef | grep chromium-browser | awk '{print $2}')
