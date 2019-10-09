@@ -14,6 +14,10 @@ import logging
 import slack
 
 
+def get_param():
+    return {x['Name'].upper(): x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
+
+
 class Monitor:
     def __init__(self, input_file_name=dataset_file):
         self.input_file_name = input_file_name
@@ -60,7 +64,7 @@ class Monitor:
 
     def run(self):
         dataset = read_source(self.input_file_name, flight_schema)
-        params = {x['Name'].upper(): x['Val'] for x in read_source(param_file, param_schema).to_dict(orient='records')}
+        params = get_param()
         start_delta = -60 * int(params.get('AHEAD', '40'))
         end_delta = 60 * int(params.get('AFTER', '5'))
         self.interval = int(params.get('REFRESH_INTERVAL', '10'))
@@ -107,26 +111,36 @@ class Monitor:
             os.system('xset dpms force off')  # blank screen
 
 
-def alert():
-    file='/run/demo/usb_count'
+def alert(default_usb):
+    file = '/run/demo/usb_count'
     os.system('lsusb | wc -l > ' + file)
     with open(file, 'r') as f:
         num = int(f.readline())
     
     if num > 4:
-        client = slack.WebClient(token=slack_token)
-        response = client.chat_postMessage(
-            channel=channel,
-            text="ALERT: UNKNOWN USB attached to PI!")
+        params = get_param()
+        if params.get('DISABLE_ALERT_USB', 'N') == 'N':
+            os.system('lsusb > ' + file + '.detail')
+            with open(file + '.detail', 'r') as f:
+                usb_list = '\n'.join([x for x in f.readlines() if x not in default_usb])
+            client = slack.WebClient(token=slack_token)
+            client.chat_postMessage(
+                channel=channel,
+                text="ALERT: UNKNOWN USB attached to PI!\n" + usb_list)
+    # end of alert
 
-if __name__== '__main__':
+
+if __name__ == '__main__':
     m = Monitor(dataset_file)
     # poll forever
+    with open('/opt/default_usb.list', 'r') as f:
+        default_usb = f.readlines()
     print('Start polling forever!')
+
     while True:
         try:
+            alert(default_usb)
             m.run()
-            alert()
         except:
             traceback.print_exc()
         time.sleep(m.interval)
