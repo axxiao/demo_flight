@@ -40,10 +40,10 @@ def process(cmd):
             # remove existing
             dataset = del_flight(dataset, fname)
         # add a new
-        dataset = dataset.append([{"Flight":fname.upper(), "Destination": dest.upper(),
-                             "Cutoff": cutt, "Cleardown": ct},])
+        dataset = dataset.append([{"Flight": fname.upper(), "Destination": dest.upper(),
+                                   "Cutoff": cutt, "Cleardown": ct}, ])
         save(dataset)
-        rtn = f'Set fight {fname} to: {dest}, {cutt}, {ct}'
+        rtn = f'Set {fname} to: {dest}, {cutt}, {ct}'
     elif cmd_key == 'del':
         fname = cmd_val
         if fname.upper() in dataset['Flight'].to_list():

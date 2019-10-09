@@ -9,4 +9,8 @@ echo "Cleaned up CODE" >> $BASE/hot_fix.log
 git clone https://github.com/axxiao/demo_flight.git $CODE >> $BASE/hot_fix.log 2>> $BASE/hot_fix.log
 echo "Copy to $MAIN from $CODE"
 cp -rf $CODE $MAIN
+echo "Restarting"  >> $BASE/hot_fix.log
+sudo kill $(ps -ef | grep start_monitor | awk '{print $2}')
+python $MAIN/start_monitor.py &
+echo "Restarted"  >> $BASE/hot_fix.log
 echo "Hot Fix Done" >> $BASE/hot_fix.log
