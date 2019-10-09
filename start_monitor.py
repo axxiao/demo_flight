@@ -70,8 +70,10 @@ class Monitor:
         #    # multi records overlaps
         #    a_list = a_list[a_list['time'] >= now]
         #    print('Filter overlaps')
-        print(now, a_list)
-        logging.debug(str(a_list))
+        if params.get('DEBUG', 'False') == 'True':
+            print(now, a_list)
+            logging.debug(str(a_list))
+            logging.debug(str(dataset))
         if len(a_list) > 0: # and self.running is None:
             # get the 1st
             current = a_list.iloc[0].to_dict()
